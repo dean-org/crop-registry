@@ -1,0 +1,33 @@
+name: Build & Publish
+
+# Thin caller: versioning/build/publish logic lives in openg2p/openg2p-packaging@v1.
+# The images build FROM registry-platform's published images (see the
+# Dockerfiles' RP_VERSION), so this repo has no source pin on it.
+
+on:
+  push:
+    branches: ["**"]
+    tags: ["**"]
+  workflow_dispatch:
+
+jobs:
+  build-publish:
+    uses: openg2p/openg2p-packaging/.github/workflows/build-publish.yml@v1
+    with:
+      images: |
+        [
+          { "name": "staff-api",   "repo": "openg2p/openg2p-crop-registry-staff-api",   "dockerfile": "docker/staff-api/Dockerfile" },
+          { "name": "partner-api", "repo": "openg2p/openg2p-crop-registry-partner-api", "dockerfile": "docker/partner-api/Dockerfile" },
+          { "name": "celery",      "repo": "openg2p/openg2p-crop-registry-celery",      "dockerfile": "docker/celery/Dockerfile" },
+          { "name": "db-seed",     "repo": "openg2p/openg2p-crop-registry-db-seed",     "dockerfile": "docker/db-seed/Dockerfile" }
+        ]
+      chart-path: helm/openg2p-crop-registry
+      chart-image-paths: |
+        [".registry.staffApi.image.tag",".registry.partnerApi.image.tag",".registry.celeryWorker.image.tag",".registry.celeryBeat.image.tag",".registry.dbSeed.image.tag"]
+      chart-inherit-questions: '{"dependency":"openg2p-registry","alias":"registry"}'
+      packaging-ref: v1
+    secrets:
+      docker_hub_actor: ${{ secrets.docker_hub_actor }}
+      docker_hub_token: ${{ secrets.docker_hub_token }}
+      OPENG2P_BOT_GITHUB_PAT: ${{ secrets.OPENG2P_BOT_GITHUB_PAT }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}

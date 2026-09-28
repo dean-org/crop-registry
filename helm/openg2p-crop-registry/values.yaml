@@ -1,0 +1,87 @@
+# Crop Registry - values overlay for the openg2p-registry chart.
+#
+#     helm repo add openg2p https://openg2p.github.io/openg2p-helm
+#     helm dependency build ./helm/openg2p-crop-registry
+#     helm install crop-registry ./helm/openg2p-crop-registry \
+#       --set global.registryHostname=crop-registry.example.org
+#
+# global.*   - Helm propagates these to the subchart.
+# registry.* - values for the openg2p-registry subchart itself.
+# Everything not set here is inherited from the subchart defaults.
+
+global:
+  baseDomain: '{{ .Release.Namespace }}.openg2p.org'
+  registryVariant: 'crop-registry'
+  registryHostname: '{{ .Release.Name }}.{{ tpl .Values.global.baseDomain $ }}'
+
+  # Database wiring: IDENTICAL to the subchart defaults. Declared here only
+  # because a parent chart cannot read a subchart's globals; drifting these would
+  # point parent-level templates at a different database than the services use.
+  postgresqlHost: commons-postgresql
+  registryDB:  '{{ printf "%s" .Release.Name | replace "-" "_" }}'
+  registryDBPort: 5432
+  registryDBUser: '{{ printf "%s_user" .Release.Name | replace "-" "_" }}'
+  registryDBSecret: '{{ .Release.Name }}'
+  registryDBUserPasswordKey: '{{ .Release.Name }}-db-user'
+  masterDataDB: 'master_data'
+  masterDataDBPort: 5432
+  masterDataDBUser: 'master_data_user'
+  masterDataDBSecret: 'master-data-db'
+  masterDataDBUserPasswordKey: 'master-data-db-user'
+
+registry:
+  # Crop-built images (each FROM the matching openg2p-registry base image).
+  # CI rewrites these tags to the freshly built version (lockstep).
+  staffApi:
+    image:
+      repository: openg2p/openg2p-crop-registry-staff-api
+      tag: 0.0.0-develop
+  partnerApi:
+    image:
+      repository: openg2p/openg2p-crop-registry-partner-api
+      tag: 0.0.0-develop
+  celeryWorker:
+    image:
+      repository: openg2p/openg2p-crop-registry-celery
+      tag: 0.0.0-develop
+  celeryBeat:
+    image:
+      repository: openg2p/openg2p-crop-registry-celery
+      tag: 0.0.0-develop
+  dbSeed:
+    image:
+      repository: openg2p/openg2p-crop-registry-db-seed
+      tag: 0.0.0-develop
+    # No sample records, images or templates ship with the crop registry yet.
+    loadGeoData: false
+    loadSampleData: false
+    loadImages: false
+    loadTemplates: false
+    # Copy the country's code lists from Master Data. `agriculture` supplies the
+    # crop / season lists; the defaults in g2p_attribute_values_defaults.sql apply
+    # where the pack has none. Geo dropdowns are not used by the crop forms.
+    loadAttributes: true
+    attributeDomains:
+      - agriculture
+    syncGeoWidgets: false
+
+  iamRegister:
+    applicationDescription: "Crop Registry"
+
+  # Functional-ID pool for the Crop register (IDs are CR-<n digits>). The
+  # subchart's default pools (individual, household) are inherited and unused.
+  idgenerator:
+    idGenerator:
+      appConfig:
+        idTypes:
+          crop:
+            idLength: 10
+
+  # Off: the Farmer Registry's sanity suite and agent portal/VC issuance are
+  # written against farmer fields and have no crop equivalent yet.
+  sanity:
+    enabled: false
+  agentPortalApi:
+    enabled: false
+  agentPortalUi:
+    enabled: false

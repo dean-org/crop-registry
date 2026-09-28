@@ -1,0 +1,1 @@
+from .g2p_register_domain_service_crop import G2PRegisterDomainServiceCrop

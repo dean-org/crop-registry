@@ -1,0 +1,43 @@
+apiVersion: v2
+name: openg2p-crop-registry
+description: |
+  OpenG2P Crop Registry - a thin, branded package over the shared
+  openg2p-registry chart published by the registry platform.
+
+  This chart owns NO service templates. It declares openg2p-registry as a pinned
+  dependency and supplies the crop values overlay (variant identity, hostname,
+  the crop-built images, seed toggles, functional-ID pool). Every deployment,
+  service, ingress, keycloak/iam wiring and the db-seed machinery come from the
+  openg2p-registry subchart.
+type: application
+
+# STATIC placeholder: CI derives the real version from git and overrides it at
+# publish time, in lockstep with the crop images this chart references.
+version: 0.0.0-develop
+appVersion: "develop"
+
+keywords:
+  - openg2p
+  - registry
+  - crop-registry
+home: https://openg2p.org
+icon: https://openg2p.github.io/openg2p-helm/openg2p-logo.png
+maintainers:
+  - name: OpenG2P
+    email: info@openg2p.org
+
+# The openg2p-registry version is HARDCODED (not CI-rewritten): the crop images
+# extend that same base image tag, so the two are pinned together and only moved
+# deliberately (scripts/bump-rp-version.sh). Aliased to `registry` so the overlay
+# nests under a hyphen-free key (.Values.registry.*).
+dependencies:
+  - name: openg2p-registry
+    alias: registry
+    version: 0.0.0-develop.432
+    repository: https://openg2p.github.io/openg2p-helm
+
+annotations:
+  catalog.cattle.io/display-name: "OpenG2P Crop Registry"
+  catalog.cattle.io/certified: partner
+  catalog.cattle.io/kube-version: ">=1.23.0-0"
+  openg2p.org/add-to-rancher: ""
