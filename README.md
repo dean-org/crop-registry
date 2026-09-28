@@ -39,10 +39,3 @@ helm install crop-registry ./helm/openg2p-crop-registry \
   --set global.registryHostname=crop-registry.example.org
 ```
 
-## Not included (yet)
-
-Deliberately left out rather than copied from the farmer registry, because each is
-written against farmer fields: DCI inbound/outbound templates, verifiable
-credentials / agent portal, scores, sample data and reporting views, and the
-sanity suite. See `crop-extension/README.md` for the field mapping and open
-decisions.
