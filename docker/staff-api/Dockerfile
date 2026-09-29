@@ -5,7 +5,7 @@
 # Build context = repo root.
 ARG RP_VERSION=0.0.0-develop.432
 #FROM openg2p/openg2p-registry-staff-api:${RP_VERSION}
-FROM dharanidharan0411/openg2p-registry-staff-api:0.0.0-develop.482
+FROM dharanidharan0411/openg2p-registry-staff-api:0.0.0-develop.483
 
 ENV REGISTRY_EXTENSION_MODULE=openg2p_registry_crop_extension
 
