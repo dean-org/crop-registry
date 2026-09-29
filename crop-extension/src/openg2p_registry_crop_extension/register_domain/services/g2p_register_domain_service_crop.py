@@ -29,7 +29,8 @@ class G2PRegisterDomainServiceCrop(G2PRegisterDomainService):
 
     async def validate_domain_attributes(self, records: list[dict]):
         for record in records:
-            self._validate_required_references(record)
+            if section_id == "crop_crop_record_section_01":
+                self._validate_required_references(record)
             self._validate_production_year(record)
             self._validate_dates(record)
             self._validate_quantities(record)
