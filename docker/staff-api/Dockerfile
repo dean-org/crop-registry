@@ -4,7 +4,8 @@
 # helm/openg2p-crop-registry/Chart.yaml (enforced by test/test_rp_pin_lockstep.py).
 # Build context = repo root.
 ARG RP_VERSION=0.0.0-develop.432
-FROM openg2p/openg2p-registry-staff-api:${RP_VERSION}
+#FROM openg2p/openg2p-registry-staff-api:${RP_VERSION}
+FROM dharanidharan0411/openg2p-registry-staff-api:0.0.0-develop.482
 
 ENV REGISTRY_EXTENSION_MODULE=openg2p_registry_crop_extension
 
