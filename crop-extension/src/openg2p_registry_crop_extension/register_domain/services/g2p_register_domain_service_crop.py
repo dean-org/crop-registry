@@ -27,7 +27,7 @@ class G2PRegisterDomainServiceCrop(G2PRegisterDomainService):
     this service only sees the records of the current request.
     """
 
-    async def validate_domain_attributes(self, records: list[dict]):
+    async def validate_domain_attributes(self, records: list[dict],section_id: str | None = None,):
         for record in records:
             if section_id == "crop_crop_record_section_01":
                 self._validate_required_references(record)
