@@ -19,10 +19,10 @@ jobs:
     with:
       images: |
         [
-          { "name": "staff-api",   "repo": "openg2p/openg2p-crop-registry-staff-api",   "dockerfile": "docker/staff-api/Dockerfile" },
-          { "name": "partner-api", "repo": "openg2p/openg2p-crop-registry-partner-api", "dockerfile": "docker/partner-api/Dockerfile" },
-          { "name": "celery",      "repo": "openg2p/openg2p-crop-registry-celery",      "dockerfile": "docker/celery/Dockerfile" },
-          { "name": "db-seed",     "repo": "openg2p/openg2p-crop-registry-db-seed",     "dockerfile": "docker/db-seed/Dockerfile" }
+          { "name": "staff-api",   "repo": "dharanidharan0411/openg2p-crop-registry-staff-api",   "dockerfile": "docker/staff-api/Dockerfile" },
+          { "name": "partner-api", "repo": "dharanidharan0411/openg2p-crop-registry-partner-api", "dockerfile": "docker/partner-api/Dockerfile" },
+          { "name": "celery",      "repo": "dharanidharan0411/openg2p-crop-registry-celery",      "dockerfile": "docker/celery/Dockerfile" },
+          { "name": "db-seed",     "repo": "dharanidharan0411/openg2p-crop-registry-db-seed",     "dockerfile": "docker/db-seed/Dockerfile" }
         ]
       chart-path: helm/openg2p-crop-registry
       chart-image-paths: |
