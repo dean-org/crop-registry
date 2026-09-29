@@ -14,6 +14,8 @@ jobs:
   build-publish:
     uses: openg2p/openg2p-packaging/.github/workflows/build-publish.yml@v1
     with:
+      changelog_skip_ai: ${{ inputs.changelog_skip_ai || false }}
+      changelog_regenerate: ${{ inputs.changelog_regenerate || '' }}
       images: |
         [
           { "name": "staff-api",   "repo": "openg2p/openg2p-crop-registry-staff-api",   "dockerfile": "docker/staff-api/Dockerfile" },
