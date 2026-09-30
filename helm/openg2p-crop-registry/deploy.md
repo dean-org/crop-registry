@@ -1,6 +1,9 @@
 helm dependency build .
+
 helm dependency list .
+
 helm lint .
+
 helm template crop-registry .
 
 helm install crop-registry . \
